@@ -1,0 +1,3 @@
+scipy
+sentence_transformers
+umap-learn
