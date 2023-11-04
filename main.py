@@ -1,5 +1,8 @@
 import argparse
 import os
+import scipy
+
+import umap.plot
 
 from utils.text_to_vector import convert_text
 from utils.api_keys import get_clarin_key
@@ -7,10 +10,10 @@ from utils.api_keys import get_clarin_key
 
 # Constants
 DEPTH = 512
-TOKEN = get_clarin_key()
-if TOKEN is None:
-    print("Please create api_key file with clarin token filled")
-    exit(0)
+# TOKEN = get_clarin_key()
+# if TOKEN is None:
+#    print("Please create api_key file with clarin token filled")
+#    exit(0)
 
 
 # Setup
@@ -44,8 +47,17 @@ for filename in os.listdir(WORK_DIR):
     file.close()
 
 encoded = convert_text(sentences)
-for name, sentence, result in zip(id, sentences, encoded):
-    print("ID: ", name)
-    print("Sentence: ", sentence)
-    print("Embedding: ", encoded)
-    print("")
+# for name, sentence, result in zip(id, sentences, encoded):
+#     print("ID: ", name)
+#     print("Sentence: ", sentence)
+#     print("Embedding: ", encoded)
+#     print("")
+
+mapper = umap.UMAP().fit(encoded)
+
+print("Encoded: " + str(len(encoded)))
+print("Sentences: " + str(len(sentences)))
+print("id: " + str(len(id)))
+
+plot = umap.plot.interactive(mapper, labels=id, point_size=2, background="black")
+umap.plot.show(plot)
