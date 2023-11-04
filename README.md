@@ -22,3 +22,12 @@ python3 -m venv venv/
 ```
 pip3 install -r requirements.txt
 ```
+
+### Adding Clarin key
+Create file api_keys.json with following contents
+
+```
+{
+    "clarin": "WUt0UWiXrANIu-7lvUk6ukEohIg1us4uYA1u0Kx8vQurjNQV"
+}
+```

@@ -2,10 +2,15 @@ import argparse
 import os
 
 from utils.text_to_vector import convert_text
+from utils.api_keys import get_clarin_key
 
 
 # Constants
 DEPTH = 512
+TOKEN = get_clarin_key()
+if TOKEN is None:
+    print("Please create api_key file with clarin token filled")
+    exit(0)
 
 
 # Setup
