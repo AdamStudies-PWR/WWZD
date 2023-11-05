@@ -1,7 +1,7 @@
 import os
 
 
-def load_texts(data_dir, depth):
+def load_texts(data_dir, depth) -> [str]:
     id:[str] = []
     sentences:[str] = []
     for filename in os.listdir(data_dir):

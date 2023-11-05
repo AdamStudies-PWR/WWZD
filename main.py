@@ -36,5 +36,12 @@ encoded = model.encode(sentences)
 
 mapper = umap.UMAP().fit(encoded)
 
-plot = umap.plot.interactive(mapper, labels=id, point_size=2, background="black")
+import pandas as pd
+import numpy as np
+
+hover_data = pd.DataFrame({'index': np.arange(len(sentences)), 'label': id})
+print(hover_data)
+
+plot = umap.plot.interactive(mapper, labels=id,
+                             point_size=2, background="black")
 umap.plot.show(plot)
