@@ -2,14 +2,21 @@ import argparse
 import os
 import umap.plot
 
-from sentence_transformers import SentenceTransformer
+from lpmn_client_biz import Connection, Task
 
+from utils.api_keys import get_clarin_key
 from utils.test_utils import load_texts
 
 
 # Constants
 DEPTH = 512
-MODEL = 'sentence-transformers/distiluse-base-multilingual-cased-v2'
+MODEL = "sbert-distiluse-base-multilingual-cased-v1"
+
+TOKEN = get_clarin_key()
+if TOKEN is None:
+   print("Please create api_key file with clarin token filled")
+   exit(0)
+
 
 # Setup
 parser = argparse.ArgumentParser(
@@ -31,10 +38,10 @@ if not os.path.isdir(WORK_DIR):
 # Code
 id, sentences = load_texts(WORK_DIR, DEPTH)
 
-model = SentenceTransformer(MODEL)
-encoded = model.encode(sentences)
+connection = Connection(api_token = TOKEN)
+task = Task([MODEL], connection)
+encoded = task.run_sent(sentences)
 
 mapper = umap.UMAP().fit(encoded)
-
 plot = umap.plot.interactive(mapper, labels=id, point_size=2, background="black")
 umap.plot.show(plot)
