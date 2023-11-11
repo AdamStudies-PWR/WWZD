@@ -8,7 +8,7 @@ from utils.test_utils import load_texts
 
 
 # Constants
-DEPTH = 512
+DEPTH = 512*20 # sprawdzić bez ograniczeń
 MODEL = 'sentence-transformers/distiluse-base-multilingual-cased-v2'
 
 # Setup
@@ -42,6 +42,8 @@ import numpy as np
 hover_data = pd.DataFrame({'index': np.arange(len(sentences)), 'label': id})
 print(hover_data)
 
+# sprawdzić plotly
 plot = umap.plot.interactive(mapper, labels=id,
+                             hover_data=hover_data,
                              point_size=2, background="black")
 umap.plot.show(plot)

@@ -9,7 +9,7 @@ from utils.test_utils import load_texts
 
 
 # Constants
-DEPTH = 512
+DEPTH = 512*20
 MODEL = "sbert-distiluse-base-multilingual-cased-v1"
 
 TOKEN = get_clarin_key()
