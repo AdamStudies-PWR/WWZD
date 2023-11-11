@@ -3,7 +3,7 @@ import umap.plot
 
 import pandas as pd
 
-from alive_progress import alive_bar
+from alive_progress import alive_it
 
 
 def trim_file_extensions(ids):
@@ -23,24 +23,15 @@ def load_metadata(df, ids, metadata_path):
     title = []
     date = []
 
-    with alive_bar(len(ids)) as bar:
-        bar.title("Patching Metadata")
-        for id in ids:
-            for record in metadata:
-                if record["id"] == id:
-                    source.append(record["source"])
-                    title.append(record["title"])
-                    date.append(record["date"])
-                    break
-            bar()
-
-    # DEBUG
-    print("Dataframe: " + str(df.shape))
-    print("ID: " + str(len(ids)))
-    print("Labels: " + str(len(source)))
-    print("Title: " + str(len(title)))
-    print("Date: " + str(len(date)))
-    # DEBUG
+    bar = alive_it(ids, title="Patching Metadata")
+    for id in bar:
+        for record in metadata:
+            if record["id"] == id:
+                source.append(record["src"])
+                title.append(record["title"])
+                date.append(record["date"])
+                metadata.remove(record)
+                break
 
     df["label"] = source
     df["title"] = title
