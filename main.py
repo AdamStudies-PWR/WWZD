@@ -1,14 +1,15 @@
 import argparse
 import os
-import umap.plot
 
 from sentence_transformers import SentenceTransformer
 
-from utils.test_utils import load_texts
+from utils.plot_utils import display_plot
+from utils.text_utils import load_texts
+from utils.data_builder import build_data
 
 
 # Constants
-DEPTH = 512*20 # sprawdzić bez ograniczeń
+DEPTH = 512*20
 MODEL = 'sentence-transformers/distiluse-base-multilingual-cased-v2'
 
 # Setup
@@ -17,33 +18,28 @@ parser = argparse.ArgumentParser(
     description="Project application for WWZD at Wroclaw University of Science (PWR)"
 )
 parser.add_argument('text_dir_path', type=str, help="Path to folder containging text files")
-
+parser.add_argument('-m', '--metadata', dest="metadata_path", required=False)
 
 # Parisng user input
 args = parser.parse_args()
 
 WORK_DIR = args.text_dir_path
 if not os.path.isdir(WORK_DIR):
-    print("Not a directory")
+    print("Provided path is not a directory")
     exit(0)
+
+METADATA_PATH = args.metadata_path
+if METADATA_PATH is not None:
+    if not os.path.isfile(METADATA_PATH):
+        print("Metadata does not point to a file")
+        exit(0)
 
 
 # Code
 id, sentences = load_texts(WORK_DIR, DEPTH)
 
 model = SentenceTransformer(MODEL)
-encoded = model.encode(sentences)
+encoded = model.encode(sentences, show_progress_bar=True)
 
-mapper = umap.UMAP().fit(encoded)
-
-import pandas as pd
-import numpy as np
-
-hover_data = pd.DataFrame({'index': np.arange(len(sentences)), 'label': id})
-print(hover_data)
-
-# sprawdzić plotly
-plot = umap.plot.interactive(mapper, labels=id,
-                             hover_data=hover_data,
-                             point_size=2, background="black")
-umap.plot.show(plot)
+dataframe = build_data(encoded, id, METADATA_PATH)
+display_plot(dataframe, (METADATA_PATH is not None))

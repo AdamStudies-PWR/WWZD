@@ -1,6 +1,8 @@
+alive_progress
 argparse
 numpy
 pandas
+plotly
 scipy
 sentence_transformers
 umap-learn[plot]
