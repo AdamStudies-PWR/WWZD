@@ -1,5 +1,5 @@
 # WWZD
-Projekt na przedmiot: Wizualizacja wielkich zbiorów danych
+Projekt na przedmiot: Wizualizacja wielkich zbiorów danych - przetwarzanie danych
 
 Człownkowie:
 * Adam Krizar
