@@ -1,10 +1,12 @@
 import argparse
 import os
-import umap.plot
 
 from lpmn_client_biz import Connection, Task
 
 from utils.api_keys import get_clarin_key
+from utils.data_builder import build_data
+from utils.general_utils import get_dataset_name
+from utils.plot_utils import display_plot
 from utils.text_utils import load_texts
 
 
@@ -49,6 +51,6 @@ connection = Connection(api_token = TOKEN)
 task = Task([MODEL], connection)
 encoded = task.run_sent(sentences)
 
-mapper = umap.UMAP().fit(encoded)
-plot = umap.plot.interactive(mapper, labels=id, point_size=2, background="black")
-umap.plot.show(plot)
+name = get_dataset_name(WORK_DIR) + "_" + MODEL + ".df"
+dataframe = build_data(encoded, id, METADATA_PATH, name)
+display_plot(dataframe, (METADATA_PATH is not None))

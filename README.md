@@ -28,6 +28,39 @@ Create file api_keys.json with following contents
 
 ```
 {
-    "clarin": "WUt0UWiXrANIu-7lvUk6ukEohIg1us4uYA1u0Kx8vQurjNQV"
+    "clarin": "YOUR_API_KEY"
 }
 ```
+
+## IMPORTANT
+### Data
+Please make sure data text files are kept in a separate folder without any sub directories or non-data files
+
+**Metadafiles mixed with data files will casue crash while loading!**
+
+### Metadata
+Currently supported metada format:
+
+```
+[
+    {
+        "id": "example id",
+        "title": "Example title",
+        "src": "example src" <-- data gets grouped by this
+        "date": "Example date"
+    },
+]
+
+```
+
+#### micro:
+In metadata.json file following changes need to be made:
+* remove the "files": label
+* change "name" -> "id"
+* change "label_0" -> "src"
+* change "label_1" -> "title"
+* change "label_2" -> "date"
+
+#### korona
+In out.json file following changes need to be made:
+* change "data" -> "date"

@@ -3,9 +3,10 @@ import os
 
 from sentence_transformers import SentenceTransformer
 
+from utils.data_builder import build_data
+from utils.general_utils import get_dataset_name
 from utils.plot_utils import display_plot
 from utils.text_utils import load_texts
-from utils.data_builder import build_data
 
 
 # Constants
@@ -41,5 +42,6 @@ id, sentences = load_texts(WORK_DIR, DEPTH)
 model = SentenceTransformer(MODEL)
 encoded = model.encode(sentences, show_progress_bar=True)
 
-dataframe = build_data(encoded, id, METADATA_PATH)
+name = get_dataset_name(WORK_DIR) + "_" + MODEL.split("/")[1] + ".df"
+dataframe = build_data(encoded, id, METADATA_PATH, name)
 display_plot(dataframe, (METADATA_PATH is not None))
