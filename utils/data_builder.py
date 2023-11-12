@@ -53,7 +53,6 @@ def load_metadata(df, ids, metadata_path):
             date.append("Unknown")
 
     size = df.shape[0]
-    print("Got size: " + str(size))
     df["label"] = source[:size]
     df["title"] = title[:size]
     df["date"] = date[:size]
