@@ -1,10 +1,2 @@
-alive_progress
-argparse
-numpy
 pandas
-plotly
-scipy
-sentence_transformers
-umap-learn[plot]
--i https://pypi.clarin-pl.eu/simple/
-lpmn_client_biz
+flask-restful
