@@ -1,6 +1,6 @@
 import os
 import json
-import umap.plot
+import umap
 
 import pandas as pd
 
@@ -38,17 +38,25 @@ def load_metadata(df, ids, metadata_path):
 
     bar = alive_it(ids, title="Patching Metadata")
     for id in bar:
+        found = False
         for record in metadata:
             if record["id"] == id:
                 source.append(record["src"])
                 title.append(record["title"])
                 date.append(record["date"])
+                found = True
                 metadata.remove(record)
                 break
+        if not found:
+            source.append("Unknown")
+            title.append("Unknown")
+            date.append("Unknown")
 
-    df["label"] = source
-    df["title"] = title
-    df["date"] = date
+    size = df.shape[0]
+    print("Got size: " + str(size))
+    df["label"] = source[:size]
+    df["title"] = title[:size]
+    df["date"] = date[:size]
     return df
 
 
