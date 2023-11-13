@@ -53,6 +53,6 @@ print("Running clarin task...")
 encoded = task.run_sent(sentences)
 print("Done")
 
-name = get_dataset_name(WORK_DIR) + "_" + MODEL + ".df"
+name = get_dataset_name(WORK_DIR) + "_" + MODEL + ".json"
 dataframe = build_data(encoded, id, METADATA_PATH, name)
 display_plot(dataframe, (METADATA_PATH is not None))

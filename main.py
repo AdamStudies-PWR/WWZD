@@ -42,6 +42,6 @@ id, sentences = load_texts(WORK_DIR, DEPTH)
 model = SentenceTransformer(MODEL)
 encoded = model.encode(sentences, show_progress_bar=True)
 
-name = get_dataset_name(WORK_DIR) + "_" + MODEL.split("/")[1] + ".df"
+name = get_dataset_name(WORK_DIR) + "_" + MODEL.split("/")[1] + ".json"
 dataframe = build_data(encoded, id, METADATA_PATH, name)
 display_plot(dataframe, (METADATA_PATH is not None))

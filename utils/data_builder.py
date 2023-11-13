@@ -15,8 +15,7 @@ def save_data(df, filename):
         os.makedirs(DF_STORAGE)
 
     dest_path = os.path.join(DF_STORAGE, filename)
-    print(dest_path)
-    df.to_csv(dest_path, sep=",", index=False, encoding="utf-8")
+    df.to_json(dest_path)
 
 
 def trim_file_extensions(ids):
