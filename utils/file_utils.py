@@ -1,8 +1,22 @@
 import os
 import json
 
+from flask import jsonify, make_response
+
 
 DATA_PATH = "dataframe"
+
+
+def build_ok_response(data):
+    response = jsonify({'some': data})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
+def build_bad_response(message: str, code:int):
+    response = make_response(message, code)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 def list_data():
@@ -14,20 +28,19 @@ def list_data():
         model = split_descriptor[1]
         data[dataset] = data.get(dataset, []) + [model]
 
-    return json.dumps(data)
+    return build_ok_response(data)
 
 
 def get_data(request):
     if  not "dataset" in request or not "model" in request:
-        return "Missing data", 400
+        return  build_bad_response("Missing data", 400)
 
     dataset = request["dataset"]
     model = request["model"]
     path = os.path.join(DATA_PATH, dataset + "_" + model + ".json")
 
     if not os.path.exists(path):
-        print(path)
-        return "Json file for reqested dataset and model not found", 404
+        return build_bad_response("Json file for reqested dataset and model not found", 404)
 
     file = open(path)
-    return json.load(file)
+    return build_ok_response(json.load(file))
