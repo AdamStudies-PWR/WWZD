@@ -8,7 +8,7 @@ DATA_PATH = "dataframe"
 
 
 def build_ok_response(data):
-    response = jsonify({'some': data})
+    response = jsonify(data)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 

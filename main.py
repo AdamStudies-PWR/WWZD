@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask, request
 
 from utils.file_utils import get_data, list_data
@@ -11,10 +13,9 @@ def list_data_():
     return list_data()
 
 
-@app.route('/get_data', methods = ['GET'])
+@app.route('/get_data', methods = ['POST'])
 def get_data_():
-    j_request = request.get_json()
-    return get_data(j_request)
+    return get_data(json.loads(request.get_data()))
 
 if __name__ == "__main__":
     app.run()
