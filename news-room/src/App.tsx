@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Spinner from './componets/Spinner';
+import PlotWrapper from './componets/PlotWrapper';
 
 class App extends Component
 {
@@ -16,12 +17,14 @@ class App extends Component
 
     datasetSpinner_: React.RefObject<Spinner>;
     modelSpinner_: React.RefObject<Spinner>;
+    plotWrapper_: React.RefObject<PlotWrapper>;
 
     constructor(props: any)
     {
         super(props);
         this.datasetSpinner_ = React.createRef();
         this.modelSpinner_ = React.createRef();
+        this.plotWrapper_ = React.createRef();
     }
 
     handleGetListResponse(response:any)
@@ -61,7 +64,14 @@ class App extends Component
 
     handleGetDataResponse(response: any)
     {
-        console.log(response)
+        let title = this.selectedDataset_ + ": " + this.selectedModel_;
+        let x: number[] = Object.values(response.x)
+        let y: number[] = Object.values(response.y)
+        let date: string[] = ("date" in response) ? Object.values(response.date) : [];
+        let label: string[] = ("label" in response) ? Object.values(response.label) : [];
+        let titles: string[] = ("title" in response) ? Object.values(response.title) : [];
+
+        this.plotWrapper_.current?.updatePlot(title, x, y, titles, label, date);
     }
 
     async getData()
@@ -120,18 +130,20 @@ class App extends Component
         return (
             <div className='App'>
                 <h1>News Room</h1>
-                    <Spinner
-                        ref={this.datasetSpinner_}
-                        name={"Dataset"}
-                        data={this.datasets_}
-                        onChange={this.handleDatasetChanged.bind(this)}/>
-                    <Spinner
-                        ref={this.modelSpinner_}
-                        name={"Model"}
-                        data={this.getModelData()}
-                        onChange={this.handleModelChanged.bind(this)}/>
-                    <button onClick={this.onGetData.bind(this)}>Get Data</button>
-                    <button onClick={this.onRefreshData.bind(this)}>Refresh</button>
+                <Spinner
+                    ref={this.datasetSpinner_}
+                    name={"Dataset"}
+                    data={this.datasets_}
+                    onChange={this.handleDatasetChanged.bind(this)}/>
+                <Spinner
+                    ref={this.modelSpinner_}
+                    name={"Model"}
+                    data={this.getModelData()}
+                    onChange={this.handleModelChanged.bind(this)}/>
+                <button onClick={this.onGetData.bind(this)}>Display Data</button>
+                <button onClick={this.onRefreshData.bind(this)}>Refresh</button>
+                <hr/>
+                <PlotWrapper ref={this.plotWrapper_}/>
             </div>);
     }
 }
