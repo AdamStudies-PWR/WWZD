@@ -1,0 +1,12 @@
+.Spinner {
+	display: flex;
+	justify-content: space-around;
+
+	padding: 0 12px;
+	height: 40px;
+}
+
+.Spinner label {
+	align-self: center;
+	padding: 0 8px;
+}

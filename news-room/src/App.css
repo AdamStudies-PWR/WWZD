@@ -1,38 +1,89 @@
+html,
+* {
+	box-sizing: border-box;
+}
+
 .App {
-  text-align: center;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	min-height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.container {
+	max-width: 1600px;
+	width: 85%;
+	margin: 0 auto;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+	background-color: #282c34;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	font-size: calc(10px + 2vmin);
+	color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.btn,
+.btn--tertiary,
+.btn--secondary,
+.btn--primary {
+	display: inline-block;
+	align-items: center;
+	min-height: 36px;
+	min-width: 96px;
+	padding: 0 8px;
+	margin: 0 16px;
+	border: none;
+	border-radius: 6px;
+	outline: none;
+	cursor: pointer;
+	font-size: 14px;
+	font-family: inherit;
+	font-variant: inherit;
+	font-style: inherit;
+	font-weight: 500;
+	line-height: 36px;
+	text-align: center;
+	text-decoration: none;
+	overflow: hidden;
+	transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+	user-select: none;
+	vertical-align: middle;
+	white-space: nowrap;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn--primary {
+	background-color: var(--primary, #661fff);
+	color: var(--secondary, #fff);
 }
+
+.btn:hover,
+.btn--primary:hover {
+	opacity: .8;
+}
+
+.filter-container {
+	padding: 16px 0;
+	display: flex;
+	flex-direction: row;
+}
+
+/* .plot-container {
+	width: 100%;
+} */
+
+/* .custom-select {
+	padding: 0.1em 1.5em 0.1em 1em;
+	line-height: 2em;
+	cursor: pointer;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
+	box-sizing: border-box;
+} */

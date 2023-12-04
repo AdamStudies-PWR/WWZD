@@ -1,8 +1,9 @@
 # WWZD
 Projekt na przedmiot: Wizualizacja wielkich zbiorów danych - prezentacja danych
 
-Człownkowie:
+Członkowie:
 * Adam Krizar
+* Krzysztof Zubrzycki
 
 ## Enviroment setup:
 
