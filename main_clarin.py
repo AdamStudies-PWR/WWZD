@@ -54,5 +54,5 @@ encoded = task.run_sent(sentences)
 print("Done")
 
 name = get_dataset_name(WORK_DIR) + "_" + MODEL + ".json"
-dataframe = build_data(encoded, id, METADATA_PATH, name)
+dataframe = build_data(encoded, id, METADATA_PATH, WORK_DIR, name)
 display_plot(dataframe, (METADATA_PATH is not None))
