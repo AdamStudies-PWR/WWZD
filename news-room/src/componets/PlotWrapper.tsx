@@ -11,9 +11,11 @@ class PlotWrapper extends Component<
 		hoverData: string[];
 		width: number;
 		height: number;
-	}
-> {
-	constructor(props: any) {
+		onClick: any;
+	}>
+{
+	constructor(props: any)
+	{
 		super(props);
 		this.state = {
 			title: 'No data',
@@ -22,33 +24,44 @@ class PlotWrapper extends Component<
 			x: [],
 			y: [],
 			width: props.width ? props.width : 1600,
-			height: props.height ? props.height : 1200
+			height: props.height ? props.height : 1200,
+			onClick: props.onClick
 		};
 	}
 
-	getHoverData(titles: string[], dates: string[]): string[] {
+	getHoverData(titles: string[], dates: string[], labels : string[],
+			     links: string[], filenames: string[], tags: string[]): string[]
+	{
 		if (titles.length !== dates.length) return [];
 
 		let temp: string[] = [];
 		titles.forEach((title, index) => {
 			const date = dates[index];
-			temp.push(title + '<br>' + date);
+			const label = labels[index];
+			const link = links[index];
+			const filename = filenames[index];
+			const tag = tags[index]
+			temp.push("Title: " + title + '<br>Date: ' + date + "<br>Label: " + label + "<br>Tags: " + tag
+			          + "<br>Link: " + link + "<br>Filename: " + filename);
 		});
 
 		return temp;
 	}
 
-	updatePlot(title: string, x: number[], y: number[], titles: string[], labels: string[], dates: string[]) {
+	updatePlot(title: string, x: number[], y: number[], titles: string[], labels: string[], dates: string[],
+			   links: string[], filenames: string[], tags: string[])
+	{
 		this.setState({
 			title: title,
-			hoverData: this.getHoverData(titles, dates),
+			hoverData: this.getHoverData(titles, dates, labels, links, filenames, tags),
 			labels: labels,
 			x: x,
 			y: y
 		});
 	}
 
-	render(): React.ReactNode {
+	render(): React.ReactNode
+	{
 		return (
 			<Plot
 				data={[
@@ -68,6 +81,7 @@ class PlotWrapper extends Component<
 					// width: window.innerWidth,
 					// height: window.innerHeight - 125,
 				}}
+				onClick={this.state.onClick}
 			/>
 		);
 	}
