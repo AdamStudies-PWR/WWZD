@@ -3,7 +3,7 @@ import json
 from flask import Flask, request, Response
 from flask_cors import CORS
 
-from utils.file_utils import get_data, list_data
+from utils.file_utils import get_data, list_data, get_snipet
 
 
 app = Flask("news-room-api")
@@ -19,14 +19,19 @@ def handle_preflight():
         return res
 
 
-@app.route('/list_data', methods = ['GET'])
+@app.route('/list_data', methods=['GET'])
 def list_data_():
     return list_data()
 
 
-@app.route('/get_data', methods = ['POST'])
+@app.route('/get_data', methods=['POST'])
 def get_data_():
     return get_data(json.loads(request.get_data()))
+
+
+@app.route('/get_snipet', methods=['POST'])
+def get_snipet_():
+    return get_snipet(json.loads(request.get_data()))
 
 
 if __name__ == "__main__":
