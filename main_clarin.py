@@ -12,7 +12,10 @@ from utils.text_utils import load_texts
 
 # Constants
 DEPTH = 512*20
-MODEL = "sbert-distiluse-base-multilingual-cased-v1"
+# MODEL = "sbert-distiluse-base-multilingual-cased-v1"
+# MODEL = "distiluse-base-multilingual-cased-v2"
+# MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
+MODEL = "paraphrase-multilingual-mpnet-base-v2"
 
 TOKEN = get_clarin_key()
 if TOKEN is None:

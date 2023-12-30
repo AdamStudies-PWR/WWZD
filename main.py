@@ -11,7 +11,10 @@ from utils.text_utils import load_texts
 
 # Constants
 DEPTH = 512*20
-MODEL = 'sentence-transformers/distiluse-base-multilingual-cased-v2'
+# MODEL = 'sentence-transformers/distiluse-base-multilingual-cased-v2'
+MODEL = 'sentence-transformers/distiluse-base-multilingual-cased-v1'
+# MODEL = 'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2'
+# MODEL = 'sentence-transformers/paraphrase-multilingual-mpnet-base-v2'
 
 # Setup
 parser = argparse.ArgumentParser(
