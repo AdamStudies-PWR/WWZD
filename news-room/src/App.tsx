@@ -73,12 +73,6 @@ class App extends Component {
 			this.plotWrapper_.current.updatePlot(title, x, y, titles, label, date, links, filenames, tags);
 	}
 
-	// handleGetSnipetResponse(response: any) {
-	// 	let snipet: string[] = 'snipet' in response ? response.snipet : 'No data';
-	// 	console.debug(snipet);
-	// 	return snipet;
-	// }
-
 	async getSnipet(id: string) {
 		const REQUEST_URI = this.SERVER_URI + this.GET_SNIPET_REQ;
 		const json = JSON.stringify({ dataset: this.selectedDataset_, model: this.selectedModel_, id: id });
@@ -97,11 +91,6 @@ class App extends Component {
 			console.error(err);
 		}
 	}
-
-	// handleOnClick(event: any) {
-	// 	const id = event.points[0].text.split('Filename: ')[1];
-	// 	this.getSnipet(id);
-	// }
 
 	async getData() {
 		const REQUEST_URI = this.SERVER_URI + this.GET_DATA_REQ;
@@ -174,7 +163,6 @@ class App extends Component {
 							Refresh
 						</button>
 					</div>
-
 					<PlotWrapper ref={this.plotWrapper_} getSnipet={this.getSnipet.bind(this)} />
 				</div>
 			</div>

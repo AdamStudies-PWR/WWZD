@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Plot from 'react-plotly.js';
+import SelectedItems from './SelectedItems';
 
 class PlotWrapper extends Component<
 	any,
@@ -13,6 +14,7 @@ class PlotWrapper extends Component<
 		width: number;
 		height: number;
 		getSnipet: any;
+		selectedItems: any[];
 	}
 > {
 	constructor(props: any) {
@@ -26,7 +28,8 @@ class PlotWrapper extends Component<
 			y: [],
 			width: props.width ? props.width : 1600,
 			height: props.height ? props.height : 1200,
-			getSnipet: props.getSnipet
+			getSnipet: props.getSnipet,
+			selectedItems: []
 		};
 	}
 
@@ -101,6 +104,40 @@ class PlotWrapper extends Component<
 		});
 	};
 
+	addSelected(id: any) {
+		let chosenHoverData = this.state.hoverData[id];
+		let selectedObject = {
+			id,
+			title: chosenHoverData.split('Title: ')[1].split('<br>')[0],
+			label: this.state.sources[id],
+			date: chosenHoverData.split('Date: ')[1].split('<br>')[0],
+			fileName: chosenHoverData.split('Filename: ')[1].split('<br>')[0],
+			link: chosenHoverData.split('Link: ')[1].split('<br>')[0],
+			tags: chosenHoverData.split('Tags: ')[1].split('<br>')[0]
+		};
+		this.setState((state) => {
+			let newSelectedItems = [ ...state.selectedItems, selectedObject ];
+			let newLabels = [ ...state.labels ];
+			newLabels[id] = 'selected';
+			return {
+				selectedItems: newSelectedItems,
+				labels: newLabels
+			};
+		});
+	}
+
+	removeSelected(id: any) {
+		this.setState((state) => {
+			let newSelectedItems = state.selectedItems.filter((item) => item.id !== id);
+			let newLabels = [ ...state.labels ];
+			newLabels[id] = this.state.sources[id];
+			return {
+				selectedItems: newSelectedItems,
+				labels: newLabels
+			};
+		});
+	}
+
 	handleClick = async (e: any) => {
 		let fileName = e.points[0].text.split('Filename: ')[1];
 		let id = this.state.hoverData.findIndex((d) => d.includes(fileName));
@@ -113,40 +150,39 @@ class PlotWrapper extends Component<
 				return { hoverData: newHoverData };
 			});
 		} else {
-			this.setState((s) => {
-				const newLabels = [ ...s.labels ];
-				if (newLabels[id] === 'selected') {
-					newLabels[id] = this.state.sources[id];
-				} else {
-					newLabels[id] = 'selected';
-				}
-				return { labels: newLabels };
-			});
+			if (this.state.labels[id] === 'selected') {
+				this.removeSelected(id);
+			} else {
+				this.addSelected(id);
+			}
 		}
 	};
 
 	render(): React.ReactNode {
 		return (
-			<Plot
-				data={[
-					{
-						x: this.state.x,
-						y: this.state.y,
-						type: 'scatter',
-						mode: 'markers',
-						transforms: [ { type: 'groupby', groups: this.state.labels } ],
-						text: this.state.hoverData
-					}
-				]}
-				layout={{
-					title: this.state.title,
-					width: this.state.width,
-					height: this.state.height
-					// width: window.innerWidth,
-					// height: window.innerHeight - 125,
-				}}
-				onClick={this.handleClick}
-			/>
+			<React.Fragment>
+				<Plot
+					data={[
+						{
+							x: this.state.x,
+							y: this.state.y,
+							type: 'scatter',
+							mode: 'markers',
+							transforms: [ { type: 'groupby', groups: this.state.labels } ],
+							text: this.state.hoverData
+						}
+					]}
+					layout={{
+						title: this.state.title,
+						width: this.state.width,
+						height: this.state.height
+						// width: window.innerWidth,
+						// height: window.innerHeight - 125,
+					}}
+					onClick={this.handleClick}
+				/>
+				{this.state.selectedItems.length > 0 && <SelectedItems selectedItems={this.state.selectedItems} />}
+			</React.Fragment>
 		);
 	}
 }
