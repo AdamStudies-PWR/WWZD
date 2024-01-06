@@ -4,8 +4,7 @@ import './App.css';
 import Spinner from './componets/Spinner';
 import PlotWrapper from './componets/PlotWrapper';
 
-class App extends Component
-{
+class App extends Component {
 	readonly SERVER_URI: string = 'http://127.0.0.1:5000/';
 	readonly LIST_DATA_REQ: string = 'list_data';
 	readonly GET_DATA_REQ: string = 'get_data';
@@ -20,33 +19,28 @@ class App extends Component
 	modelSpinner_: React.RefObject<Spinner>;
 	plotWrapper_: React.RefObject<PlotWrapper>;
 
-	constructor(props: any)
-	{
+	constructor(props: any) {
 		super(props);
 		this.datasetSpinner_ = React.createRef();
 		this.modelSpinner_ = React.createRef();
 		this.plotWrapper_ = React.createRef();
 	}
 
-	handleGetListResponse(response: any)
-	{
+	handleGetListResponse(response: any) {
 		this.datasetMap_.clear();
 		this.datasets_ = [];
 
-		for (let item in response)
-		{
+		for (let item in response) {
 			let key: string = item.toString();
 			let values: string[] = response[key];
 			this.datasetMap_.set(key, values);
 
-			if (!this.datasets_.includes(key))
-			{
+			if (!this.datasets_.includes(key)) {
 				this.datasets_.push(key);
 			}
 		}
 
-		if (this.selectedDataset_ === '')
-		{
+		if (this.selectedDataset_ === '') {
 			this.selectedDataset_ = this.datasets_[0] ? this.datasets_[0] : '';
 		}
 
@@ -54,8 +48,7 @@ class App extends Component
 		if (this.modelSpinner_.current) this.modelSpinner_.current.updateData(this.getModelData());
 	}
 
-	async getList()
-	{
+	async getList() {
 		const REQUEST_URI = this.SERVER_URI + this.LIST_DATA_REQ;
 		fetch(REQUEST_URI)
 			.then((response) => response.json())
@@ -65,8 +58,7 @@ class App extends Component
 			});
 	}
 
-	handleGetDataResponse(response: any)
-	{
+	handleGetDataResponse(response: any) {
 		let title = this.selectedDataset_ + ': ' + this.selectedModel_;
 		let x: number[] = Object.values(response.x);
 		let y: number[] = Object.values(response.y);
@@ -77,44 +69,41 @@ class App extends Component
 		let links: string[] = 'links' in response ? Object.values(response.links) : [];
 		let filenames: string[] = 'filenames' in response ? Object.values(response.filenames) : [];
 
-		if (this.plotWrapper_.current) this.plotWrapper_.current.updatePlot(title, x, y, titles, label, date, links,
-																			filenames, tags);
+		if (this.plotWrapper_.current)
+			this.plotWrapper_.current.updatePlot(title, x, y, titles, label, date, links, filenames, tags);
 	}
 
-	handleGetSnipetResponse(response: any)
-	{
-		let snipet: string[] = 'snipet' in response ? response.snipet : "No data";
-		console.debug(snipet)
-	}
+	// handleGetSnipetResponse(response: any) {
+	// 	let snipet: string[] = 'snipet' in response ? response.snipet : 'No data';
+	// 	console.debug(snipet);
+	// 	return snipet;
+	// }
 
-	async getSnipet(id: string)
-	{
+	async getSnipet(id: string) {
 		const REQUEST_URI = this.SERVER_URI + this.GET_SNIPET_REQ;
 		const json = JSON.stringify({ dataset: this.selectedDataset_, model: this.selectedModel_, id: id });
-
-		fetch(REQUEST_URI, {
-			method: 'post',
-			body: json,
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			}
-		})
-			.then((response) => response.json())
-			.then((data) => this.handleGetSnipetResponse(data))
-			.catch((err) => {
-				console.log(err.message);
+		try {
+			const response = await fetch(REQUEST_URI, {
+				method: 'post',
+				body: json,
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				}
 			});
+			const result = await response.json();
+			return result;
+		} catch (err) {
+			console.error(err);
+		}
 	}
 
-	handleOnClick(event: any)
-	{
-		const id = event.points[0].text.split("Filename: ")[1];
-		this.getSnipet(id)
-	}
+	// handleOnClick(event: any) {
+	// 	const id = event.points[0].text.split('Filename: ')[1];
+	// 	this.getSnipet(id);
+	// }
 
-	async getData()
-	{
+	async getData() {
 		const REQUEST_URI = this.SERVER_URI + this.GET_DATA_REQ;
 		const json = JSON.stringify({ dataset: this.selectedDataset_, model: this.selectedModel_ });
 
@@ -133,41 +122,33 @@ class App extends Component
 			});
 	}
 
-	getModelData(): string[]
-	{
+	getModelData(): string[] {
 		const arr: any = this.datasetMap_.get(this.selectedDataset_);
-		if (arr !== undefined)
-		{
+		if (arr !== undefined) {
 			this.selectedModel_ = arr[0];
 			return arr;
-		}
-		else return [];
+		} else return [];
 	}
 
-	handleDatasetChanged(event: React.ChangeEvent<HTMLInputElement>)
-	{
+	handleDatasetChanged(event: React.ChangeEvent<HTMLInputElement>) {
 		this.selectedDataset_ = event.target.value;
 		if (this.modelSpinner_.current) this.modelSpinner_.current.updateData(this.getModelData());
 	}
 
-	handleModelChanged(event: React.ChangeEvent<HTMLInputElement>)
-	{
+	handleModelChanged(event: React.ChangeEvent<HTMLInputElement>) {
 		this.selectedModel_ = event.target.value;
 	}
 
-	onRefreshData()
-	{
+	onRefreshData() {
 		this.getList();
 	}
 
-	onGetData()
-	{
+	onGetData() {
 		if (this.selectedModel_ === '') return;
 		this.getData();
 	}
 
-	render(): React.ReactNode
-	{
+	render(): React.ReactNode {
 		this.getList();
 		return (
 			<div className="App">
@@ -194,7 +175,7 @@ class App extends Component
 						</button>
 					</div>
 
-					<PlotWrapper ref={this.plotWrapper_} onClick={this.handleOnClick.bind(this)}/>
+					<PlotWrapper ref={this.plotWrapper_} getSnipet={this.getSnipet.bind(this)} />
 				</div>
 			</div>
 		);
