@@ -1,0 +1,38 @@
+.SelectedItems {
+	margin-bottom: 16px;
+}
+
+.SelectedItems-container {
+	margin: 16px 0;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.SelectedItem-selected-container {
+	min-width: 450px;
+	background-color: hsl(263, 80%, 85%);
+	padding: 4px 8px;
+	margin-bottom: 4px;
+	cursor: pointer;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
+	border-radius: 8px;
+}
+
+.SelectedItem-notselected-container {
+	min-width: 450px;
+	background-color: hsl(263, 80%, 90%);
+	padding: 4px 8px;
+	margin-bottom: 4px;
+	cursor: pointer;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
+	border-radius: 8px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	transition: all 200ms ease-out;
+}
+
+.SelectedItem-notselected-container:hover {
+	background-color: hsl(263, 70%, 85%);
+}

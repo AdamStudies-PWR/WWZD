@@ -1,4 +1,6 @@
 import React from 'react';
+import SelectedItem from './SelectedItem';
+import '../styles/SelectedItems.css';
 
 type TSelectedItem = {
 	id: string;
@@ -8,6 +10,7 @@ type TSelectedItem = {
 	fileName: string;
 	link: string;
 	tags: string[];
+	snipet: string;
 };
 
 type SelectedItemsProps = {
@@ -41,23 +44,23 @@ const generateTextFile = (selectedItems: TSelectedItem[]) => {
 };
 
 const SelectedItems = ({ selectedItems }: SelectedItemsProps) => {
-	return (
-		<div>
-			{selectedItems &&
-				selectedItems.map((item) => (
-					<p key={item.id} onClick={() => generateTextFile(selectedItems)}>
-						{item.fileName}
-					</p>
-				))}
-
-			<button className="btn--primary" onClick={() => generateTextFile(selectedItems)}>
-				Save selected filenames as Text File
-			</button>
-			<button className="btn--primary" onClick={() => generateJSONFile(selectedItems)}>
-				Save selected filenames as JSON
-			</button>
-		</div>
-	);
+	if (selectedItems) {
+		return (
+			<div className="SelectedItems">
+				<section className="SelectedItems-container">
+					<h1 className="SelectedItems-title">Currently Selected Items:</h1>
+					{selectedItems && selectedItems.map((item) => <SelectedItem {...item} key={item.fileName} />)}
+				</section>
+				<button className="btn--primary" onClick={() => generateTextFile(selectedItems)}>
+					Save selected filenames as Text File
+				</button>
+				<button className="btn--primary" onClick={() => generateJSONFile(selectedItems)}>
+					Save selected filenames as JSON
+				</button>
+			</div>
+		);
+	}
+	return <React.Fragment />;
 };
 
 export default SelectedItems;

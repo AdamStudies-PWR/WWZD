@@ -141,15 +141,26 @@ class PlotWrapper extends Component<
 	handleClick = async (e: any) => {
 		let fileName = e.points[0].text.split('Filename: ')[1];
 		let id = this.state.hoverData.findIndex((d) => d.includes(fileName));
-		if (e.event.ctrlKey) {
+		if (e.event.ctrlKey && e.points.length > 0) {
+			// Already has snippet, dont call for another one
 			if (this.state.hoverData[id].includes('Snipet: ')) return;
+
 			let result = await this.props.getSnipet(fileName);
 			this.setState((s) => {
 				let newHoverData = [ ...s.hoverData ];
 				newHoverData[id] += `<br>Snipet: ${'snipet' in result ? result.snipet : 'No data'}`;
-				return { hoverData: newHoverData };
+
+				let newSelectedItems = [ ...s.selectedItems ];
+
+				// Check if item is selected
+				let snipetItemIndex = newSelectedItems.findIndex((item) => item.fileName === fileName);
+				if (snipetItemIndex !== -1) {
+					newSelectedItems[snipetItemIndex].snipet = 'snipet' in result ? result.snipet : 'No data';
+				}
+
+				return { hoverData: newHoverData, selectedItems: newSelectedItems };
 			});
-		} else {
+		} else if (e.points.length > 0) {
 			if (this.state.labels[id] === 'selected') {
 				this.removeSelected(id);
 			} else {
