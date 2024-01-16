@@ -3,6 +3,7 @@ import './App.css';
 
 import Spinner from './componets/Spinner';
 import PlotWrapper from './componets/PlotWrapper';
+import TutorialWrapper from './componets/TutorialWrapper';
 
 class App extends Component {
 	readonly SERVER_URI: string = 'http://127.0.0.1:5000/';
@@ -176,8 +177,11 @@ class App extends Component {
 							onChange={this.handleModelChanged.bind(this)}
 						/>
 						<button className="btn--primary" onClick={this.onRefreshData.bind(this)}>
-							Refresh
+							Refresh Options
 						</button>
+					</div>
+					<div className="tutorial-container">
+						<TutorialWrapper />
 					</div>
 					<PlotWrapper ref={this.plotWrapper_} getSnipet={this.getSnipet.bind(this)} />
 				</div>
