@@ -113,8 +113,14 @@ class PlotWrapper extends Component<
 			date: chosenHoverData.split('Date: ')[1].split('<br>')[0],
 			fileName: chosenHoverData.split('Filename: ')[1].split('<br>')[0],
 			link: chosenHoverData.split('Link: ')[1].split('<br>')[0],
-			tags: chosenHoverData.split('Tags: ')[1].split('<br>')[0]
+			tags: chosenHoverData.split('Tags: ')[1].split('<br>')[0],
+			snipet: ''
 		};
+
+		if (chosenHoverData.includes('Snipet')) {
+			selectedObject.snipet = chosenHoverData.split('Snipet: ')[1];
+		}
+
 		this.setState((state) => {
 			let newSelectedItems = [ ...state.selectedItems, selectedObject ];
 			let newLabels = [ ...state.labels ];
