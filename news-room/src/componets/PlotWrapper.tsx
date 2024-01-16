@@ -144,6 +144,12 @@ class PlotWrapper extends Component<
 		});
 	}
 
+	removeAllSelectedItems() {
+		this.state.selectedItems.forEach((item) => {
+			this.removeSelected(item.id);
+		});
+	}
+
 	handleClick = async (e: any) => {
 		let fileName = e.points[0].text.split('Filename: ')[1];
 		let id = this.state.hoverData.findIndex((d) => d.includes(fileName));
@@ -202,6 +208,11 @@ class PlotWrapper extends Component<
 					}}
 					onClick={this.handleClick}
 				/>
+				{this.state.selectedItems.length > 0 && (
+					<button className="btn--primary" onClick={this.removeAllSelectedItems.bind(this)}>
+						Remove All Selected Items
+					</button>
+				)}
 				{this.state.selectedItems.length > 0 && <SelectedItems selectedItems={this.state.selectedItems} />}
 			</React.Fragment>
 		);
