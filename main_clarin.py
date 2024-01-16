@@ -10,13 +10,17 @@ from utils.plot_utils import display_plot
 from utils.text_utils import load_texts
 
 
+def get_available_models() -> str:
+    return 'Options are: ' \
+       + '\nsbert-distiluse-base-multilingual-cased-v1' \
+       + '\nsbert-paraphrase-multilingual-mpnet-base-v2' \
+       + '\nmultilingual-e5-base' \
+       + '\nmultilingual-e5-large' \
+       + '\nsbert-klej-cdsc-r'
+
+
 # Constants
 DEPTH = 512*20
-# MODEL = "sbert-distiluse-base-multilingual-cased-v1"
-# MODEL = "sbert-paraphrase-multilingual-mpnet-base-v2"
-# MODEL = "multilingual-e5-base"
-# MODEL = "multilingual-e5-large"
-MODEL = "sbert-klej-cdsc-r"
 
 TOKEN = get_clarin_key()
 if TOKEN is None:
@@ -30,11 +34,14 @@ parser = argparse.ArgumentParser(
     description="Project application for WWZD at Wroclaw University of Science (PWR)"
 )
 parser.add_argument('text_dir_path', type=str, help="Path to folder containging text files")
-parser.add_argument('-m', '--metadata', dest="metadata_path", required=False)
+parser.add_argument('-m', '--model', dest='model', required=True, help=get_available_models())
+parser.add_argument('-md', '--metadata', dest="metadata_path", required=False,
+                    help='Path to metdata file describing the data')
 
 
 # Parisng user input
 args = parser.parse_args()
+MODEL = args.model
 
 WORK_DIR = args.text_dir_path
 if not os.path.isdir(WORK_DIR):
