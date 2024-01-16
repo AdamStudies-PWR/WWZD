@@ -169,6 +169,10 @@ class PlotWrapper extends Component<
 		}
 	};
 
+	emptySelectedItems() {
+		this.setState({ selectedItems: [] });
+	}
+
 	render(): React.ReactNode {
 		return (
 			<React.Fragment>

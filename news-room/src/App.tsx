@@ -29,6 +29,7 @@ class App extends Component {
 	handleGetListResponse(response: any) {
 		this.datasetMap_.clear();
 		this.datasets_ = [];
+		let models = [];
 
 		for (let item in response) {
 			let key: string = item.toString();
@@ -43,6 +44,13 @@ class App extends Component {
 		if (this.selectedDataset_ === '') {
 			this.selectedDataset_ = this.datasets_[0] ? this.datasets_[0] : '';
 		}
+
+		if (this.selectedModel_ === '') {
+			models = this.getModelData();
+			this.selectedModel_ = models ? models[0] : '';
+		}
+
+		this.getData();
 
 		if (this.datasetSpinner_.current) this.datasetSpinner_.current.updateData(this.datasets_);
 		if (this.modelSpinner_.current) this.modelSpinner_.current.updateData(this.getModelData());
@@ -93,6 +101,11 @@ class App extends Component {
 	}
 
 	async getData() {
+		if (this.selectedDataset_ === '' || this.selectedModel_ === '') {
+			console.error('No dataset or model');
+			return;
+		}
+
 		const REQUEST_URI = this.SERVER_URI + this.GET_DATA_REQ;
 		const json = JSON.stringify({ dataset: this.selectedDataset_, model: this.selectedModel_ });
 
@@ -122,18 +135,24 @@ class App extends Component {
 	handleDatasetChanged(event: React.ChangeEvent<HTMLInputElement>) {
 		this.selectedDataset_ = event.target.value;
 		if (this.modelSpinner_.current) this.modelSpinner_.current.updateData(this.getModelData());
+
+		if (this.selectedModel_ !== '' && this.selectedDataset_ !== '') {
+			this.getData();
+			if (this.plotWrapper_.current) this.plotWrapper_.current.emptySelectedItems();
+		}
 	}
 
 	handleModelChanged(event: React.ChangeEvent<HTMLInputElement>) {
 		this.selectedModel_ = event.target.value;
+
+		if (this.selectedModel_ !== '' && this.selectedDataset_ !== '') {
+			this.getData();
+			if (this.plotWrapper_.current) this.plotWrapper_.current.emptySelectedItems();
+		}
 	}
 
 	onRefreshData() {
 		this.getList();
-	}
-
-	onGetData() {
-		if (this.selectedModel_ === '') return;
 		this.getData();
 	}
 
@@ -156,9 +175,6 @@ class App extends Component {
 							data={this.getModelData()}
 							onChange={this.handleModelChanged.bind(this)}
 						/>
-						<button className="btn--primary" onClick={this.onGetData.bind(this)}>
-							Display Data
-						</button>
 						<button className="btn--primary" onClick={this.onRefreshData.bind(this)}>
 							Refresh
 						</button>
