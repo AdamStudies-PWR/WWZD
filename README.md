@@ -66,12 +66,12 @@ Each of the above fields should be filled in metadata file. Any additional field
     ```
 
     model_name can be:
-    1. sbert-distiluse-base-multilingual-cased-v1'
-    2. sbert-paraphrase-multilingual-mpnet-base-v2'
-    3. multilingual-e5-base'
-    4. multilingual-e5-large'
-    5. sbert-klej-cdsc-r'
-
+    1. sbert-distiluse-base-multilingual-cased-v1
+    2. sbert-paraphrase-multilingual-mpnet-base-v2
+    3. multilingual-e5-base
+    4. multilingual-e5-large
+    5. sbert-klej-cdsc-r
+    </br>
 
     * For local models:
     ```
@@ -79,11 +79,11 @@ Each of the above fields should be filled in metadata file. Any additional field
     ```
 
     model_name can be:
-    1. sbert-distiluse-base-multilingual-cased-v1'
-    2. sbert-paraphrase-multilingual-mpnet-base-v2'
-    3. multilingual-e5-base'
-    4. multilingual-e5-large'
-    5. sbert-klej-cdsc-r'
+    1. sbert-distiluse-base-multilingual-cased-v1
+    2. sbert-paraphrase-multilingual-mpnet-base-v2
+    3. multilingual-e5-base
+    4. multilingual-e5-large
+    5. sbert-klej-cdsc-r
 
 * Flag ``` -m ``` means that next argument will specify which model should be used. This flag is mandatory.
 * Flag ``` -md ``` means that next argment will be path to metadata. Using it is not mandatory.
